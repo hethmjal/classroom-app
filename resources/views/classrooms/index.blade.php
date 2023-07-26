@@ -10,21 +10,37 @@
       
       </div>    
         @endif
-        <h1 class="mb-4">Classrooms</h1>
+
         
+       <div class="d-flex  justify-content-between">
+        
+           
+        <h1 class="mb-4">Classrooms</h1>
+
+
+      
+      <div class="">
+        <a href="{{route('classrooms.create')}}" class="btn btn-lg btn-primary ">Create Classrooms</a> 
+
+        <a href="{{route('classrooms.trached')}}" class="btn btn-lg btn-danger ">Trached Classrooms</a> 
+
+      </div>
+     
+
+     </div>
         <div class="row">
          
 
                 @foreach ($classes as $class)
                 <div class="col-md-3">
                 <div class="card" style="">
-                    <img src="{{asset('uploads/'.$class->cover_image_path)}}" width="400" height="150" class="card-img-top" alt="...">
+                    <img src="{{asset('uploads/'.$class->cover_image_path)}}" width="400" height="90" class="card-img-top" alt="...">
                     <div class="card-body">
                       <h5 class="card-title">{{$class->name}} </h5>
                       <p class="card-text">{{$class->section}}</p>
-                      <a href="{{route('classrooms.show',$class->code)}}" class="btn btn-primary">show</a>
-                      <a href="{{route('classrooms.edit',$class->id)}}" class="btn btn-success">edit</a>
-                      <button type="submit" class="btn btn-danger deleteBtn" onclick="deleteTopic({{$class->id}})">delete</button>
+                      <a href="{{route('classrooms.show',$class->id)}}" class="btn btn-sm btn-primary">show</a>
+                      <a href="{{route('classrooms.edit',$class->id)}}" class="btn btn-sm btn-success">edit</a>
+                      <button type="submit" class="btn btn-sm btn-danger deleteBtn" onclick="deleteTopic({{$class->id}})">delete</button>
                         <form action="{{route('classrooms.destroy',$class->id)}}" id="deleteForm{{$class->id}}" method="post">
                             @csrf
                             @method('delete')

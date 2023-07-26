@@ -5,7 +5,7 @@
                 <h1 class="mb-5">Create topic</h1>
                 
         
-                <form action=" {{route('topics.update',$topic->id)}} " method="post">
+                <form action=" {{route('classrooms.topics.update',[$topic->classroom->id,$topic->id])}} " method="post">
                     @csrf
                     @method('put')
                     <div class="form-floating mb-3">

@@ -4,7 +4,7 @@
         <h1 class="mb-5">Create topic</h1>
         
 
-        <form action=" {{route('topics.store')}} " method="post">
+        <form action=" {{route('classrooms.topics.store',$class->id)}} " method="post">
             @csrf
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" name="name" id="name" placeholder="Classroom Name">

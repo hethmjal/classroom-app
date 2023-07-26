@@ -7,13 +7,13 @@
     <meta name="description" content="@yield('description')">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-
+    @stack('css')
     <title>{{$title}}</title>
 </head>
 <body>
     <header class="mb-4" >
-        <div class="container">
-        <nav class=" navbar navbar-expand-lg navbar-light bg-light">
+        <div class="">
+        <nav class=" navbar navbar-expand-lg navbar-light bg-light ">
   
         <div class="container-fluid">
             <a class="navbar-brand" href="{{route('classrooms.index')}}">{{ config('app.name') }}</a>
@@ -53,7 +53,7 @@
     </div>
     </header>
     <main>
-        @yield('content');
+        @yield('content')
     </main>
 <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
     <div class="col-md-4 d-flex align-items-center">
