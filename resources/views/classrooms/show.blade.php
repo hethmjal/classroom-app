@@ -5,7 +5,7 @@
 <style>
     .bg-img{
       background-image: 
-        url("{{asset('uploads/'.$classroom->cover_image_path)}}");
+        url("{{$classroom->cover_image_url}}");
         font-family: 'Changa', sans-serif;
         /*  height: 500px; */ /* You must set a specified height */
         background-position: center; /* Center the image */
@@ -36,16 +36,27 @@
 
         <h5>Share Link</h5>
         <div class="d-flex align-items-center">
-            <div  class="mx-1">
-                <input w id="link" type="text" class="form-control" value="{{$invitaion_link}}"  readonly>
+            <div  class="">
+                <input  id="link" type="text" class="form-control" value="{{$invitaion_link}}"  readonly>
     
             </div>
-            <div >
-                <button onclick="myFunction()" class="btn btn-sm btn-outline-success">Copy</button>
+            <div class="ml-1" >
+                <button onclick="myFunction()" class="mx-1 btn btn-sm btn-outline-success">Copy</button>
     
             </div>
       
         </div>
+
+        <div  class="my-2">
+           <p> <a href="{{route('classrooms.classworks.index',$classroom->id)}}" class="btn btn-outline-dark" target="_blank">Classworks</a> </p>
+
+        </div>
+
+        <div  class="my-2">
+            <p> <a href="{{route('classrooms.people',$classroom->id)}}" class="btn btn-outline-dark" target="_blank">Memebers</a> </p>
+ 
+         </div>
+
 
         </div>
 

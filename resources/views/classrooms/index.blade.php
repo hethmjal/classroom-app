@@ -34,13 +34,14 @@
                 @foreach ($classes as $class)
                 <div class="col-md-3">
                 <div class="card" style="">
-                    <img src="{{asset('uploads/'.$class->cover_image_path)}}" width="400" height="90" class="card-img-top" alt="...">
+                  
+                    <img src="{{$class->cover_image_url}}" width="400" height="90" class="card-img-top" alt="...">
                     <div class="card-body">
                       <h5 class="card-title">{{$class->name}} </h5>
                       <p class="card-text">{{$class->section}}</p>
-                      <a href="{{route('classrooms.show',$class->id)}}" class="btn btn-sm btn-primary">show</a>
-                      <a href="{{route('classrooms.edit',$class->id)}}" class="btn btn-sm btn-success">edit</a>
-                      <button type="submit" class="btn btn-sm btn-danger deleteBtn" onclick="deleteTopic({{$class->id}})">delete</button>
+                      <a href="{{route('classrooms.show',$class->id)}}" class="btn btn-sm btn-primary">{{__('View')}}</a>
+                      <a href="{{route('classrooms.edit',$class->id)}}" class="btn btn-sm btn-success">{{__('Edit')}}</a>
+                      <button type="submit" class="btn btn-sm btn-danger deleteBtn" onclick="deleteTopic({{$class->id}})">{{__('Delete')}}</button>
                         <form action="{{route('classrooms.destroy',$class->id)}}" id="deleteForm{{$class->id}}" method="post">
                             @csrf
                             @method('delete')

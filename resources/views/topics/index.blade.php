@@ -54,7 +54,7 @@
          
 
                 @foreach ($topics as $topic)
-                <div class="col-md-2">
+                <div class="col-md-3">
                 <div class="card" style="">
                     <div class="card-body">
                       <h5 class="card-title">{{$topic->name}} </h5>

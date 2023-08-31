@@ -17,12 +17,20 @@ use Illuminate\Validation\Rule;
 
 class ClassroomController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        //$this->authorizeResource(Classwork::class);
+    }  
+
+    
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        
+          
         //Session::put('message','test');
         //Session::flash('message','flash message');
         //return Session::get('message') || session('\message');
@@ -51,7 +59,8 @@ class ClassroomController extends Controller
             $path = Classroom::uploadCoverImage($file);
             $request->merge(['cover_image_path'=>$path]);
         }
-        $request->merge(['code' => Str::random(8)]);
+        // in creating event in Classroom model
+       // $request->merge(['code' => Str::random(8)]);
 
         DB::beginTransaction();
         try {
@@ -62,7 +71,7 @@ class ClassroomController extends Controller
         DB::commit();
         } catch (Exception $e) {
          DB::rollBack();
-         return back()->with('message',$e->getMessage());
+         return back()->with('error',$e->getMessage());
         }
         
 
@@ -123,6 +132,7 @@ class ClassroomController extends Controller
     public function destroy( $id)
     {
         $class = Classroom::findOrFail($id);
+        // in forceDeleted event in Classroom model
        // $class->deleteCoverImage($class->cover_image_path);
         $class->delete();
         return to_route('classrooms.index')
@@ -149,8 +159,10 @@ class ClassroomController extends Controller
     {
         $class = Classroom::withTrashed()->findOrFail($id);
         $class->forceDelete();
-        $class->deleteCoverImage($class->cover_image_path);
+     //$class->deleteCoverImage($class->cover_image_path);
         return to_route('classrooms.trached')
         ->with('message',"classroom ({$class->name}) deleted successfully");     
     }
+
+    
 }

@@ -1,9 +1,14 @@
 <?php
 
 use App\Http\Controllers\ClassroomController;
+use App\Http\Controllers\ClassroomPeopleController;
+use App\Http\Controllers\ClassWorkController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\JoinClassroomController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\TopicController;
+use App\Models\Classwork;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,7 +47,7 @@ Route::put('/classrooms/edit/{id}',[ClassroomController::class,'update'])->name(
 Route::delete('/classrooms/delete/{id}',[ClassroomController::class,'destroy'])->name('classrooms.delete'); */
 
 
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth','user.preferences'])->group(function(){
 
     // Classrooms routes
     Route::prefix('/classrooms/trached')->controller(ClassroomController::class)->group(function(){  
@@ -50,8 +55,9 @@ Route::middleware(['auth'])->group(function(){
         Route::put('/restore/{id}', 'restore')->name('classrooms.restore');
         Route::delete('/forceDelete/{id}', 'forceDelete')->name('classrooms.forceDelete');
     });
-    Route::resource('classrooms',ClassroomController::class)
-           ->names([/* 'index'=>'classrooms','create'=>'classrooms' */]);
+ /*    Route::resource('classrooms',ClassroomController::class)
+          // ->names([ 'index'=>'classrooms','create'=>'classrooms' ]); 
+            */
    
         // Join classrooms routes
     Route::get('/classrooms/{classroom}/join',[JoinClassroomController::class,'create'])
@@ -68,11 +74,37 @@ Route::middleware(['auth'])->group(function(){
         Route::delete('/forceDelete/{topic}', 'forceDelete')->name('topics.forceDelete');
     });
 
-    // tpoics routes
+    Route::resources([
+        'classrooms.topics'=>TopicController::class,
+        'classrooms'=>ClassroomController::class,
+        'classrooms.classworks'=>ClassWorkController::class,
+    ]);
+
+    Route::get('/classrooms/{classroom}/people',[ClassroomPeopleController::class,'index'])->name('classrooms.people');
+    Route::delete('/classrooms/{classroom}/people',[ClassroomPeopleController::class,'destroy'])->name('classrooms.people.destroy');
+
+    // Comments
+
+    Route::post('comments',[CommentController::class,'store'])
+    ->name('comments.store');
+
+    Route::post('classwork/{classwork}/submission',[SubmissionController::class,'store'])
+    ->name('submissions.store')
+   // ->middleware('can:submissions.create,classwork');
+   // ->middleware('can:submissions.create,app\Model\Classwork');
+    ;
+
+    Route::get('submissions/{submission}/file',[SubmissionController::class,'file'])
+    ->name('submissions.file');
+
+
+
     // Nested resources
-    Route::resource('classrooms.topics',TopicController::class);
+    //Route::resource('classrooms.topics',TopicController::class);
    
-    
+    // Class Works routes
+    //Route::resource('classrooms.classworks',ClassWorkController::class)->shallow();
+
         
     });
     

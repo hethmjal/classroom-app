@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Classroom;
 use App\Models\Scopes\UserClassroomScope;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,8 +19,10 @@ class JoinClassroomController extends Controller
         $classroom = Classroom::withoutGlobalScope(UserClassroomScope::class)
         ->active()
         ->findOrFail($id);
+
+      
         try {
-            $this->exists($id,Auth::id());
+            $this->exists($classroom,Auth::id());
         } catch (Exception $e) {
             return to_route('classrooms.show',$classroom->id);
         }
@@ -38,23 +41,26 @@ class JoinClassroomController extends Controller
         ->findOrFail($id);
 
         try {
-            $this->exists($id,Auth::id());
+            $classroom->join(auth()->id(),$request->input('role','student'));
         } catch (Exception $e) {
             return to_route('classrooms.show',$id);
         }
 
-       $classroom->join(auth()->id(),$request->input('role','student'));
+     
     
 
         return to_route('classrooms.show',$classroom->id);
 
     }
 
-    protected function exists($classroom_id,$user_id){
-        $exists = DB::table('classroom_user')
+    protected function exists(Classroom $classroom,$user_id){
+       //$exists = $classroom->users()->wherePivot('user_id',$user_id)->exists();
+       $exists = $classroom->users()->where('id',$user_id)->exists();
+
+       /*  $exists = DB::table('classroom_user')
         ->where('classroom_id', $classroom_id)
         ->where('user_id',$user_id)
-        ->exists();
+        ->exists(); */
        if($exists){
             throw new Exception('User already joined classroom');
        }
