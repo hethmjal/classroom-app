@@ -110,7 +110,9 @@ Route::middleware(['auth','user.preferences'])->group(function(){
     
 
 
-
+    Route::get('/charts', function () {
+        return view('charts');
+    });
 
 
 

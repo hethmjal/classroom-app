@@ -1,4 +1,5 @@
 import './bootstrap';
+import './mycharts.js';
 
 /* import Alpine from 'alpinejs';
 
@@ -19,3 +20,5 @@ Echo.private('App.Models.User.' + userId)
 .notification(function(event){
     alert(event.body)
 })
+
+
