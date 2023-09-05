@@ -9,8 +9,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\TopicController;
 use App\Models\Classwork;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+
     return view('welcome');
 });
 
@@ -47,74 +49,74 @@ Route::put('/classrooms/edit/{id}',[ClassroomController::class,'update'])->name(
 Route::delete('/classrooms/delete/{id}',[ClassroomController::class,'destroy'])->name('classrooms.delete'); */
 
 
-Route::middleware(['auth','user.preferences'])->group(function(){
+Route::middleware(['auth', 'user.preferences'])->group(function () {
 
     // Classrooms routes
-    Route::prefix('/classrooms/trached')->controller(ClassroomController::class)->group(function(){  
+    Route::prefix('/classrooms/trached')->controller(ClassroomController::class)->group(function () {
         Route::get('/', 'trached')->name('classrooms.trached');
         Route::put('/restore/{id}', 'restore')->name('classrooms.restore');
         Route::delete('/forceDelete/{id}', 'forceDelete')->name('classrooms.forceDelete');
     });
- /*    Route::resource('classrooms',ClassroomController::class)
+    /*    Route::resource('classrooms',ClassroomController::class)
           // ->names([ 'index'=>'classrooms','create'=>'classrooms' ]); 
             */
-   
-        // Join classrooms routes
-    Route::get('/classrooms/{classroom}/join',[JoinClassroomController::class,'create'])
-    ->middleware('signed')
-    ->name('classrooms.join');
-    Route::post('/classrooms/{classroom}/join',[JoinClassroomController::class,'store'])
-    ->name('classrooms.join');
+
+    // Join classrooms routes
+    Route::get('/classrooms/{classroom}/join', [JoinClassroomController::class, 'create'])
+        ->middleware('signed')
+        ->name('classrooms.join');
+    Route::post('/classrooms/{classroom}/join', [JoinClassroomController::class, 'store'])
+        ->name('classrooms.join');
 
 
     // trached topics routes
-    Route::prefix('classrooms/{classroom}/topics/trached')->controller(TopicController::class)->group(function(){  
+    Route::prefix('classrooms/{classroom}/topics/trached')->controller(TopicController::class)->group(function () {
         Route::get('/', 'trached')->name('topics.trached');
         Route::put('/restore/{topic}', 'restore')->name('topics.restore');
         Route::delete('/forceDelete/{topic}', 'forceDelete')->name('topics.forceDelete');
     });
 
     Route::resources([
-        'classrooms.topics'=>TopicController::class,
-        'classrooms'=>ClassroomController::class,
-        'classrooms.classworks'=>ClassWorkController::class,
+        'classrooms.topics' => TopicController::class,
+        'classrooms' => ClassroomController::class,
+        'classrooms.classworks' => ClassWorkController::class,
     ]);
 
-    Route::get('/classrooms/{classroom}/people',[ClassroomPeopleController::class,'index'])->name('classrooms.people');
-    Route::delete('/classrooms/{classroom}/people',[ClassroomPeopleController::class,'destroy'])->name('classrooms.people.destroy');
+    Route::get('/classrooms/{classroom}/people', [ClassroomPeopleController::class, 'index'])->name('classrooms.people');
+    Route::delete('/classrooms/{classroom}/people', [ClassroomPeopleController::class, 'destroy'])->name('classrooms.people.destroy');
 
     // Comments
 
-    Route::post('comments',[CommentController::class,'store'])
-    ->name('comments.store');
+    Route::post('comments', [CommentController::class, 'store'])
+        ->name('comments.store');
 
-    Route::post('classwork/{classwork}/submission',[SubmissionController::class,'store'])
-    ->name('submissions.store')
-   // ->middleware('can:submissions.create,classwork');
-   // ->middleware('can:submissions.create,app\Model\Classwork');
+    Route::post('classwork/{classwork}/submission', [SubmissionController::class, 'store'])
+        ->name('submissions.store')
+        // ->middleware('can:submissions.create,classwork');
+        // ->middleware('can:submissions.create,app\Model\Classwork');
     ;
 
-    Route::get('submissions/{submission}/file',[SubmissionController::class,'file'])
-    ->name('submissions.file');
+    Route::get('submissions/{submission}/file', [SubmissionController::class, 'file'])
+        ->name('submissions.file');
 
 
 
     // Nested resources
     //Route::resource('classrooms.topics',TopicController::class);
-   
+
     // Class Works routes
     //Route::resource('classrooms.classworks',ClassWorkController::class)->shallow();
 
-        
-    });
-    
 
-
-    Route::get('/charts', function () {
-        return view('charts');
-    });
+});
 
 
 
+Route::get('/charts', function () {
+    return view('charts');
+});
 
-require __DIR__.'/auth.php';
+
+
+
+require __DIR__ . '/auth.php';

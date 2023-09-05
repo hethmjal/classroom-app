@@ -30,6 +30,17 @@ class Classroom extends Model
         'status'
     ];
 
+
+    // to show attribute with json response
+    protected $appends = [
+        'cover_image_url'
+    ];
+
+    // to hidden attribute from json response
+    protected $hidden = [
+        'cover_image_path','deleted_at'
+    ];
+
     protected static function booted()
     {
        
@@ -156,5 +167,12 @@ class Classroom extends Model
     public function streams(): HasMany
     {
         return $this->hasMany(Stream::class)->latest();
+    }
+
+
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id','id');
     }
 }

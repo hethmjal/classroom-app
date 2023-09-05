@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AccessTokenController;
+use App\Http\Controllers\Api\V1\ClassroomController;
+use App\Http\Controllers\Api\V1\ClassworksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +17,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->group(function () {
+
+    Route::middleware('guest:sanctum')->group(function () {
+        Route::post('/login',[AccessTokenController::class,'store']);
+    });
+
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::apiResource('/classrooms',ClassroomController::class);
+        Route::apiResource('classrooms.classworks',ClassworksController::class);
+
+        Route::get('/access-tokens',[AccessTokenController::class,'index']);
+        Route::delete('/logout/{id?}',[AccessTokenController::class,'destroy']);
+
+    });
+
 });
+
+
+
+
+
+
